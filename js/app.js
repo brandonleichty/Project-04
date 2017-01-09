@@ -1,3 +1,5 @@
+"use strict";
+
 
 
 var htmlStartSnippet = '<div class="screen screen-start" id="start">' +
@@ -7,6 +9,7 @@ var htmlStartSnippet = '<div class="screen screen-start" id="start">' +
                           '</header>' +
                         '</div>';
 
+
 var htmlWinSnippet = '<div class="screen screen-win" id="finish">'
                         '<header>' +
                           '<h1>Tic Tac Toe</h1>' +
@@ -14,6 +17,7 @@ var htmlWinSnippet = '<div class="screen screen-win" id="finish">'
                           '<a href="#" class="button">New game</a>' +
                         '</header>' +
                       '</div>';
+
 
 var htmlBoardSnippet = '<div class="board" id="board">' +
                         '<header>' +
@@ -35,3 +39,8 @@ var htmlBoardSnippet = '<div class="board" id="board">' +
                           '<li class="box"></li>' +
                         '</ul>' +
                       '</div>';
+
+
+//Have start screen appear when page loads
+
+$('body').append(htmlStartSnippet);

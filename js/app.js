@@ -5,12 +5,12 @@
 var htmlStartSnippet = '<div class="screen screen-start" id="start">' +
                           '<header>' +
                             '<h1>Tic Tac Toe</h1>' +
-                            '<a href="#" class="button">Start game</a>' +
+                            '<a href="#" class="button" id="start-game">Start game</a>' +
                           '</header>' +
                         '</div>';
 
 
-var htmlWinSnippet = '<div class="screen screen-win" id="finish">'
+var htmlWinSnippet = '<div class="screen screen-win" id="finish">' +
                         '<header>' +
                           '<h1>Tic Tac Toe</h1>' +
                           '<p class="message"></p>' +
@@ -42,5 +42,16 @@ var htmlBoardSnippet = '<div class="board" id="board">' +
 
 
 //Have start screen appear when page loads
+$('body').prepend(htmlStartSnippet);
 
-$('body').append(htmlStartSnippet);
+
+//Hide start page and show board on button click
+$('#start-game').on("click", function(){
+  $('#start').fadeOut(200);
+  newGame();
+});
+
+
+function newGame(){
+  $('body').fadeIn(htmlBoardSnippet);
+};

@@ -53,6 +53,10 @@ $('#start-game').on("click", function(){
 
 
 function newGame(){
+  //Removes board and all active players from previous game (if there was one)
+  $('#board').remove();
+  $('.players').removeClass('active');
+  
   $('#start').after(htmlBoardSnippet);
   $('#player1').addClass('active');
 };
@@ -76,6 +80,23 @@ $("body").on("mouseleave", '.box', function() {
     }
     if ($("#player2").hasClass("active")){
       $(this).removeClass("hover-x");
+    }
+  }
+});
+
+
+//Switches the active player between X and O on box click
+$('body').on('click', '.box', function(){
+
+  if ($(this).hasClass("filled") === false) {
+      if ($("#player1").hasClass("active")) {
+        $(this).addClass("box-filled-1 filled o-checked");
+        $("#player1").removeClass("active");
+        $("#player2").addClass("active");
+    } else {
+        $(this).addClass("box-filled-2 filled x-checked");
+        $("#player2").removeClass("active");
+        $("#player1").addClass("active");
     }
   }
 });

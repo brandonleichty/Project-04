@@ -53,6 +53,29 @@ $('#start-game').on("click", function(){
 
 
 function newGame(){
-  $('body').append(htmlBoardSnippet);
+  $('#start').after(htmlBoardSnippet);
   $('#player1').addClass('active');
 };
+
+
+$("body").on("mouseenter", '.box', function() {
+  if ($(this).hasClass("filled") === false){
+    if ($("#player1").hasClass("active")){
+      $(this).addClass("hover-o");
+    }
+    if ($("#player2").hasClass("active")){
+      $(this).addClass("hover-x");
+    }
+  }
+});
+
+$("body").on("mouseleave", '.box', function() {
+  if ($(this).hasClass("filled") === false){
+    if ($("#player1").hasClass("active")){
+      $(this).removeClass("hover-o");
+    }
+    if ($("#player2").hasClass("active")){
+      $(this).removeClass("hover-x");
+    }
+  }
+});

@@ -48,15 +48,22 @@ $('body').prepend(htmlStartSnippet);
 //Hide start page and show board on button click
 $('#start-game').on("click", function(){
   $('#start').hide();
-  newGame();
+  TicTacToeGame.newGame();
 });
 
+// Game constructor function
+function Game(){
 
-function newGame(){
+};
+
+var TicTacToeGame = new Game();
+
+//Function added to Game Prototype
+Game.prototype.newGame = function() {
   //Removes board and all active players from previous game (if there was one)
   $('#board').remove();
   $('.players').removeClass('active');
-  
+
   $('#start').after(htmlBoardSnippet);
   $('#player1').addClass('active');
 };
@@ -98,5 +105,51 @@ $('body').on('click', '.box', function(){
         $("#player2").removeClass("active");
         $("#player1").addClass("active");
     }
+    checkForWinner();
   }
 });
+
+
+var currentPlayer;
+
+// $('li.box:nth-child(3)').hasClass('o-checked');
+
+// $('li.box:nth-child(1)').hasClass('o-checked') && $('li.box:nth-child(2)').hasClass('o-checked') && $('li.box:nth-child(3)').hasClass('o-checked')
+
+function checkForWinner() {
+
+      var winner = 0;
+
+        if ($("#player1").hasClass("active")){
+          currentPlayer = 'x-checked';
+        } else {
+          currentPlayer = 'o-checked';
+        }
+
+        if ($('li.box:nth-child(1)').hasClass(currentPlayer) && $('li.box:nth-child(2)').hasClass(currentPlayer) && $('li.box:nth-child(3)').hasClass(currentPlayer)){
+          winner = 1;
+        } else if ($('li.box:nth-child(4)').hasClass(currentPlayer) && $('li.box:nth-child(5)').hasClass(currentPlayer) && $('li.box:nth-child(6)').hasClass(currentPlayer)){
+          winner = 1;
+        } else if ($('li.box:nth-child(7)').hasClass(currentPlayer) && $('li.box:nth-child(8)').hasClass(currentPlayer) && $('li.box:nth-child(9)').hasClass(currentPlayer)){
+          winner = 1;
+
+        } else if ($('li.box:nth-child(1)').hasClass(currentPlayer) && $('li.box:nth-child(4)').hasClass(currentPlayer) && $('li.box:nth-child(7)').hasClass(currentPlayer)){
+          winner = 1;
+        } else if ($('li.box:nth-child(2)').hasClass(currentPlayer) && $('li.box:nth-child(5)').hasClass(currentPlayer) && $('li.box:nth-child(8)').hasClass(currentPlayer)){
+          winner = 1;
+        } else if ($('li.box:nth-child(3)').hasClass(currentPlayer) && $('li.box:nth-child(6)').hasClass(currentPlayer) && $('li.box:nth-child(9)').hasClass(currentPlayer)){
+          winner = 1;
+
+        } else if ($('li.box:nth-child(1)').hasClass(currentPlayer) && $('li.box:nth-child(5)').hasClass(currentPlayer) && $('li.box:nth-child(9)').hasClass(currentPlayer)){
+          winner = 1;
+        } else if ($('li.box:nth-child(3)').hasClass(currentPlayer) && $('li.box:nth-child(5)').hasClass(currentPlayer) && $('li.box:nth-child(7)').hasClass(currentPlayer)){
+          winner = 1;
+        }
+
+        if((winner === 1) && (currentPlayer === 'o-checked')){
+          alert('O is the winner!');
+        } else if ((winner === 1) && (currentPlayer === 'x-checked')){
+          alert('X is the winner!');
+        }
+        return winner;
+      };

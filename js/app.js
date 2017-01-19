@@ -1,7 +1,7 @@
 "use strict";
 
 
-
+//Start screen html snippet to append to page on page load
 var htmlStartSnippet = '<div class="screen screen-start" id="start">' +
                           '<header>' +
                             '<h1>Tic Tac Toe</h1>' +
@@ -9,7 +9,7 @@ var htmlStartSnippet = '<div class="screen screen-start" id="start">' +
                           '</header>' +
                         '</div>';
 
-
+//This html snippet will be appended when a player wins or there is a tie
 var htmlWinSnippet = '<div class="screen screen-win" id="finish">' +
                         '<header>' +
                           '<h1>Tic Tac Toe</h1>' +
@@ -18,7 +18,7 @@ var htmlWinSnippet = '<div class="screen screen-win" id="finish">' +
                         '</header>' +
                       '</div>';
 
-
+//The html snippet for the game board. This will be removed/added from the DOM as need be
 var htmlBoardSnippet = '<div class="board" id="board">' +
                         '<header>' +
                           '<h1>Tic Tac Toe</h1>' +
@@ -40,35 +40,61 @@ var htmlBoardSnippet = '<div class="board" id="board">' +
                         '</ul>' +
                       '</div>';
 
+//Global variables//
+
+var playerWinningMove;
+
+var turnCount = 0;
+
+
 
 //Have start screen appear when page loads
 $('body').prepend(htmlStartSnippet);
 
 
-//Hide start page and show board on button click
-$('#start-game').on("click", function(){
-  $('#start').hide();
+//Hide start page and show board (start new game) when user clicks "New Game"
+$('a.button').on("click", function(){
+
+//calls the newGame method from the TicTacToeGame object
   TicTacToeGame.newGame();
 });
+
+
+
+$('body').on("click", '#finish', function(){
+
+
+  console.log("This finally worked!")
+  $('#finish').remove();
+  TicTacToeGame.newGame();
+});
+
 
 // Game constructor function
 function Game(){
 
-};
+}
 
 var TicTacToeGame = new Game();
 
-//Function added to Game Prototype
+//Function added to Game Prototype--this was added just so I could test out prototypes
 Game.prototype.newGame = function() {
   //Removes board and all active players from previous game (if there was one)
+
+  //Reset turn counter back to zero
+  turnCount = 0;
+  $('#start').hide();
+
   $('#board').remove();
   $('.players').removeClass('active');
+  $('#finish').removeClass('screen-win-one');
+
 
   $('#start').after(htmlBoardSnippet);
   $('#player1').addClass('active');
 };
 
-
+//Event lister for when a users mouse enters a square on the game board
 $("body").on("mouseenter", '.box', function() {
   if ($(this).hasClass("filled") === false){
     if ($("#player1").hasClass("active")){
@@ -80,6 +106,7 @@ $("body").on("mouseenter", '.box', function() {
   }
 });
 
+//Event lister for when a users mouse exits a square on the game board
 $("body").on("mouseleave", '.box', function() {
   if ($(this).hasClass("filled") === false){
     if ($("#player1").hasClass("active")){
@@ -105,51 +132,63 @@ $('body').on('click', '.box', function(){
         $("#player2").removeClass("active");
         $("#player1").addClass("active");
     }
-    checkForWinner();
+    //Everytime a user clicks a square on the board the checkForWinner fucntion is called
+    TicTacToeGame.checkForWinner();
   }
 });
 
 
-var currentPlayer;
-
-// $('li.box:nth-child(3)').hasClass('o-checked');
-
-// $('li.box:nth-child(1)').hasClass('o-checked') && $('li.box:nth-child(2)').hasClass('o-checked') && $('li.box:nth-child(3)').hasClass('o-checked')
-
-function checkForWinner() {
+//Checks for a winning combination. Added to Game object prototype
+Game.prototype.checkForWinner = function() {
 
       var winner = 0;
 
+      turnCount++;
+
         if ($("#player1").hasClass("active")){
-          currentPlayer = 'x-checked';
+          playerWinningMove = 'x-checked';
         } else {
-          currentPlayer = 'o-checked';
+          playerWinningMove = 'o-checked';
         }
 
-        if ($('li.box:nth-child(1)').hasClass(currentPlayer) && $('li.box:nth-child(2)').hasClass(currentPlayer) && $('li.box:nth-child(3)').hasClass(currentPlayer)){
+        if ($('li.box:nth-child(1)').hasClass(playerWinningMove) && $('li.box:nth-child(2)').hasClass(playerWinningMove) && $('li.box:nth-child(3)').hasClass(playerWinningMove)){
           winner = 1;
-        } else if ($('li.box:nth-child(4)').hasClass(currentPlayer) && $('li.box:nth-child(5)').hasClass(currentPlayer) && $('li.box:nth-child(6)').hasClass(currentPlayer)){
+        } else if ($('li.box:nth-child(4)').hasClass(playerWinningMove) && $('li.box:nth-child(5)').hasClass(playerWinningMove) && $('li.box:nth-child(6)').hasClass(playerWinningMove)){
           winner = 1;
-        } else if ($('li.box:nth-child(7)').hasClass(currentPlayer) && $('li.box:nth-child(8)').hasClass(currentPlayer) && $('li.box:nth-child(9)').hasClass(currentPlayer)){
+        } else if ($('li.box:nth-child(7)').hasClass(playerWinningMove) && $('li.box:nth-child(8)').hasClass(playerWinningMove) && $('li.box:nth-child(9)').hasClass(playerWinningMove)){
           winner = 1;
-
-        } else if ($('li.box:nth-child(1)').hasClass(currentPlayer) && $('li.box:nth-child(4)').hasClass(currentPlayer) && $('li.box:nth-child(7)').hasClass(currentPlayer)){
+        } else if ($('li.box:nth-child(1)').hasClass(playerWinningMove) && $('li.box:nth-child(4)').hasClass(playerWinningMove) && $('li.box:nth-child(7)').hasClass(playerWinningMove)){
           winner = 1;
-        } else if ($('li.box:nth-child(2)').hasClass(currentPlayer) && $('li.box:nth-child(5)').hasClass(currentPlayer) && $('li.box:nth-child(8)').hasClass(currentPlayer)){
+        } else if ($('li.box:nth-child(2)').hasClass(playerWinningMove) && $('li.box:nth-child(5)').hasClass(playerWinningMove) && $('li.box:nth-child(8)').hasClass(playerWinningMove)){
           winner = 1;
-        } else if ($('li.box:nth-child(3)').hasClass(currentPlayer) && $('li.box:nth-child(6)').hasClass(currentPlayer) && $('li.box:nth-child(9)').hasClass(currentPlayer)){
+        } else if ($('li.box:nth-child(3)').hasClass(playerWinningMove) && $('li.box:nth-child(6)').hasClass(playerWinningMove) && $('li.box:nth-child(9)').hasClass(playerWinningMove)){
           winner = 1;
-
-        } else if ($('li.box:nth-child(1)').hasClass(currentPlayer) && $('li.box:nth-child(5)').hasClass(currentPlayer) && $('li.box:nth-child(9)').hasClass(currentPlayer)){
+        } else if ($('li.box:nth-child(1)').hasClass(playerWinningMove) && $('li.box:nth-child(5)').hasClass(playerWinningMove) && $('li.box:nth-child(9)').hasClass(playerWinningMove)){
           winner = 1;
-        } else if ($('li.box:nth-child(3)').hasClass(currentPlayer) && $('li.box:nth-child(5)').hasClass(currentPlayer) && $('li.box:nth-child(7)').hasClass(currentPlayer)){
+        } else if ($('li.box:nth-child(3)').hasClass(playerWinningMove) && $('li.box:nth-child(5)').hasClass(playerWinningMove) && $('li.box:nth-child(7)').hasClass(playerWinningMove)){
           winner = 1;
         }
 
-        if((winner === 1) && (currentPlayer === 'o-checked')){
-          alert('O is the winner!');
-        } else if ((winner === 1) && (currentPlayer === 'x-checked')){
-          alert('X is the winner!');
+        //Shows the winning screen of player O of they have a winning combination
+        if((winner === 1) && (playerWinningMove === 'o-checked')){
+          $('#board').remove();
+          $('body').prepend(htmlWinSnippet);
+          $('#finish').addClass('screen-win-one');
+          $('.message').html("Winner");
+
+        //Shows the winning screen of player X of they have a winning combination
+        } else if ((winner === 1) && (playerWinningMove === 'x-checked')){
+          $('#board').remove();
+          $('body').prepend(htmlWinSnippet);
+          $('#finish').addClass('screen-win-two');
+          $('.message').html("Winner");
+
+          //Shows the tie screen nine plays have been made with no winner
+        } else if (turnCount === 9 && winner !== 1){
+          $('#board').remove();
+          $('body').prepend(htmlWinSnippet);
+          $('#finish').addClass('screen-win-tie');
+          $('.message').html("It's a tie!");
         }
         return winner;
       };

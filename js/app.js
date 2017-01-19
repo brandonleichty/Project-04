@@ -65,8 +65,6 @@
 
   $('body').on("click", '#finish', function(){
 
-
-    console.log("This finally worked!")
     $('#finish').remove();
     TicTacToeGame.newGame();
   });
